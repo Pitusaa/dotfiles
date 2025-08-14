@@ -1,0 +1,112 @@
+# =============================================================================
+# GITIGNORE PARA REPOSITORIO DOTFILES
+# =============================================================================
+
+# Archivos de sistema macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archivos temporales de sistema Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Logs
+*.log
+logs/
+
+# Backups automáticos
+*.backup
+*.bak
+*.tmp
+*~
+
+# Archivos de configuración locales/privados
+*.local
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# Archivos de credenciales
+.ssh/
+.aws/
+.gnupg/
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# Cache directories
+.cache/
+cache/
+tmp/
+temp/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules si accidentalmente se añaden
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+target/
+build/
+
+# Archivos específicos que NO queremos trackear
+# (configuraciones muy personales o con datos sensibles)
+
+# Historial de zsh (puede contener info sensible)
+.zsh_history
+
+# Configuraciones locales específicas del usuario
+.zshrc.local
+.bashrc.local
+.profile.local
+
+# Directorios de desarrollo que pueden crearse durante testing
+test-env/
+dev-test/
+
+# =============================================================================
+# ARCHIVOS QUE SÍ QUEREMOS TRACKEAR (asegurándonos que no los ignoramos)
+# =============================================================================
+
+# Importante: estos archivos SÍ deben estar en el repo
+!terminal/.zshrc
+!terminal/.p10k.zsh
+!install.sh
+!terminal/install-fonts.sh
+!scripts/backup.sh
+!scripts/restore.sh
+!README.md
+!docs/*.md
