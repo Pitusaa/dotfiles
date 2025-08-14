@@ -37,8 +37,8 @@ error() {
 echo -e "${PURPLE}"
 cat << "EOF"
 ╔═══════════════════════════════════════════════════════════════╗
-║                        DOTFILES INSTALLER                    ║
-║              Configuración personalizada de terminal         ║
+║                        DOTFILES INSTALLER                     ║
+║              Configuración personalizada de terminal          ║
 ╚═══════════════════════════════════════════════════════════════╝
 EOF
 echo -e "${NC}"
@@ -188,13 +188,162 @@ copy_configs() {
     if [[ -f "$DOTFILES_DIR/terminal/.zshrc" ]]; then
         cp "$DOTFILES_DIR/terminal/.zshrc" "$HOME/.zshrc"
         success "Configuración .zshrc copiada"
+        
+        # Verificar que el .zshrc se copió correctamente
+        verify_zshrc_config
+    else
+        warning "No se encontró $DOTFILES_DIR/terminal/.zshrc"
+        log "Creando configuración .zshrc básica..."
+        create_basic_zshrc
     fi
     
     # Copiar .p10k.zsh
     if [[ -f "$DOTFILES_DIR/terminal/.p10k.zsh" ]]; then
         cp "$DOTFILES_DIR/terminal/.p10k.zsh" "$HOME/.p10k.zsh"
         success "Configuración .p10k.zsh copiada"
+    else
+        warning "No se encontró $DOTFILES_DIR/terminal/.p10k.zsh"
+        log "Se configurará Powerlevel10k en el primer inicio"
     fi
+}
+
+# Función para verificar que .zshrc es correcto
+verify_zshrc_config() {
+    log "Verificando configuración .zshrc..."
+    
+    # Verificaciones de configuración correcta
+    local checks_passed=0
+    local total_checks=4
+    
+    # Check 1: Contiene referencia a Oh My Zsh
+    if grep -q "oh-my-zsh" ~/.zshrc; then
+        checks_passed=$((checks_passed + 1))
+    else
+        warning "❌ .zshrc no contiene configuración de Oh My Zsh"
+    fi
+    
+    # Check 2: Tema de Powerlevel10k correcto
+    if grep -q 'ZSH_THEME="powerlevel10k/powerlevel10k"' ~/.zshrc; then
+        checks_passed=$((checks_passed + 1))
+    else
+        warning "❌ .zshrc no tiene el tema de Powerlevel10k correcto"
+    fi
+    
+    # Check 3: No contiene rutas incorrectas de P10k
+    if ! grep -q "~/powerlevel10k/" ~/.zshrc; then
+        checks_passed=$((checks_passed + 1))
+    else
+        warning "❌ .zshrc contiene rutas incorrectas de Powerlevel10k"
+    fi
+    
+    # Check 4: Plugins básicos presentes
+    if grep -q "plugins=" ~/.zshrc; then
+        checks_passed=$((checks_passed + 1))
+    else
+        warning "❌ .zshrc no contiene configuración de plugins"
+    fi
+    
+    # Evaluar resultados
+    if [[ $checks_passed -eq $total_checks ]]; then
+        success "✅ Configuración .zshrc verificada correctamente ($checks_passed/$total_checks)"
+    elif [[ $checks_passed -ge 2 ]]; then
+        warning "⚠️ Configuración .zshrc parcialmente correcta ($checks_passed/$total_checks)"
+        log "El sistema debería funcionar, pero pueden aparecer algunas advertencias"
+    else
+        error "❌ Configuración .zshrc incorrecta ($checks_passed/$total_checks)"
+        log "Aplicando configuración de respaldo..."
+        create_basic_zshrc
+    fi
+}
+
+# Función para crear .zshrc básico como respaldo
+create_basic_zshrc() {
+    log "Creando configuración .zshrc básica de respaldo..."
+    
+    # Hacer backup del .zshrc problemático
+    if [[ -f ~/.zshrc ]]; then
+        cp ~/.zshrc ~/.zshrc.backup-problematico-$(date +%Y%m%d-%H%M%S)
+        log "Backup del .zshrc problemático creado"
+    fi
+    
+    # Crear .zshrc limpio y funcional
+    cat << 'EOF' > ~/.zshrc
+# =============================================================================
+# ZSHRC BÁSICO GENERADO AUTOMÁTICAMENTE
+# Configuración mínima funcional para Oh My Zsh + Powerlevel10k
+# =============================================================================
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Which plugins would you like to load?
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    docker
+    docker-compose
+    npm
+    node
+    python
+    sudo
+    history
+    common-aliases
+    colored-man-pages
+    command-not-found
+    extract
+)
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+export EDITOR='nvim'
+
+# Basic aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Git aliases
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline'
+
+# Docker aliases
+alias d='docker'
+alias dc='docker-compose'
+alias dps='docker ps'
+
+# Load Powerlevel10k config
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Auto-install missing plugins if they don't exist
+if [[ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]]; then
+    echo "Installing zsh-autosuggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 2>/dev/null || true
+fi
+
+if [[ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]]; then
+    echo "Installing zsh-syntax-highlighting..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 2>/dev/null || true
+fi
+EOF
+    
+    success "✅ Configuración .zshrc básica creada"
+    log "Esta configuración incluye auto-instalación de plugins faltantes"
 }
 
 # Función para configurar zsh como shell por defecto
@@ -264,9 +413,20 @@ EOF
     echo "2. Reiniciar tu terminal o ejecutar: source ~/.zshrc"
     echo "3. Si hay problemas, ejecutar: p10k configure"
     echo ""
-    echo -e "${CYAN}📁 Backup guardado en:${NC} $BACKUP_DIR"
-    echo -e "${CYAN}📁 Dotfiles disponibles en:${NC} $DOTFILES_DIR"
-    echo -e "${CYAN}🔧 Para restaurar backup:${NC} bash $DOTFILES_DIR/scripts/restore.sh $BACKUP_DIR"
+    echo -e "${CYAN}🔍 Verificación rápida:${NC}"
+    echo "• Ejecutar: source ~/.zshrc"
+    echo "• Si ves advertencias sobre instant prompt, es normal en la primera carga"
+    echo "• Si faltan plugins, se instalarán automáticamente"
+    echo ""
+    echo -e "${CYAN}📁 Archivos importantes:${NC}"
+    echo "• Backup: $BACKUP_DIR"
+    echo "• Dotfiles: $DOTFILES_DIR"
+    echo "• Configuración: ~/.zshrc y ~/.p10k.zsh"
+    echo ""
+    echo -e "${CYAN}🔧 En caso de problemas:${NC}"
+    echo "• Restaurar backup: bash $DOTFILES_DIR/scripts/restore.sh $BACKUP_DIR"
+    echo "• Reconfigurar P10k: p10k configure"
+    echo "• Verificar plugins: ls ~/.oh-my-zsh/custom/plugins/"
     echo ""
 }
 

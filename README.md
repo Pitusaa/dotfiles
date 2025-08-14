@@ -1,90 +1,12 @@
-# 🚀 Dotfiles - Configuración Personalizada de Terminal
+# 🚀 Dotfiles - Terminal de Desarrollo Profesional
 
-Configuración completa y automatizada para un terminal de desarrollo moderno con **zsh**, **Oh My Zsh**, **Powerlevel10k** y configuraciones optimizadas para desarrollo en **Java**, **C#**, **JavaScript**, **Python** y **Docker**.
+> Configuración completa y automatizada para un terminal moderno con **zsh**, **Oh My Zsh**, **Powerlevel10k** optimizado para desarrollo en **Java**, **C#**, **JavaScript**, **Python** y **Docker**.
 
-![Terminal Preview](https://via.placeholder.com/800x400/1a1a1a/ffffff?text=Terminal+Preview)
+![GitHub stars](https://img.shields.io/github/stars/pitusaa/dotfiles?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/pitusaa/dotfiles)
+![GitHub](https://img.shields.io/github/license/pitusaa/dotfiles)
 
-## ✨ Características
-
-- **🎨 Terminal moderno**: Prompt de dos líneas con información contextual
-- **⚡ Rendimiento optimizado**: Solo muestra información relevante según el proyecto
-- **🔧 Desarrollo-friendly**: Configurado para Java, C#, Node.js, Python y Docker
-- **🌈 Colores y iconos**: Interfaz visual atractiva con Nerd Fonts
-- **📦 Instalación automática**: Un comando y todo funciona
-- **🔄 Sincronización**: Misma configuración en todos tus ordenadores
-
-## 🛠️ Stack Incluido
-
-| Herramienta | Propósito | Estado |
-|-------------|-----------|--------|
-| **zsh** | Shell moderno | ✅ |
-| **Oh My Zsh** | Framework de zsh | ✅ |
-| **Powerlevel10k** | Tema del prompt | ✅ |
-| **MesloLGS NF** | Fuente con iconos | ✅ |
-| **Git integration** | Estado de repositorios | ✅ |
-| **Language versions** | Java, Node, Python, C# | ✅ |
-| **Docker context** | Kubernetes/Docker info | ✅ |
-
-## 🚀 Instalación
-
-### 💡 Método 1: Una sola línea (recomendado)
-```bash
-curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
-```
-> **¿Qué hace?** Clona automáticamente el repositorio en `~/dotfiles` y ejecuta la instalación completa.
-
-### 🔧 Método 2: Clonar manualmente
-```bash
-git clone https://github.com/pitusaa/dotfiles.git
-cd dotfiles
-chmod +x install-local.sh
-./install-local.sh
-```
-> **¿Cuándo usar?** Si prefieres revisar el código antes o personalizar algo.
-
-### ⚡ Método 3: Solo actualizar configuración
-```bash
-# Si ya tienes el repo clonado
-cd ~/dotfiles
-git pull origin main
-./install-local.sh
-```
-
-## 📋 Requisitos Previos
-
-- **Sistema operativo**: Linux (Ubuntu/Debian, Fedora, Arch) o macOS
-- **Internet**: Para descargar dependencias
-- **Permisos sudo**: Para instalar paquetes del sistema
-
-## 🎯 Lo que incluye la instalación
-
-1. **Dependencias del sistema**: `zsh`, `git`, `curl`, `wget`, `fontconfig`
-2. **Oh My Zsh**: Framework principal
-3. **Powerlevel10k**: Tema avanzado del prompt
-4. **Fuentes Nerd Font**: Para iconos y símbolos
-5. **Configuraciones personalizadas**: Archivos `.zshrc` y `.p10k.zsh`
-6. **Backup automático**: De tus configuraciones existentes
-
-## 📁 Estructura del Proyecto
-
-```
-dotfiles/
-├── install.sh              # 🚀 Script principal (auto-clona repo)
-├── install-local.sh        # 🔧 Script para ejecución local
-├── README.md               # 📖 Esta documentación
-├── terminal/
-│   ├── .p10k.zsh          # ⚙️ Configuración de Powerlevel10k
-│   ├── .zshrc             # 🐚 Configuración de zsh
-│   └── install-fonts.sh   # 🔤 Instalador de fuentes
-├── scripts/
-│   ├── backup.sh          # 💾 Crear backups
-│   └── restore.sh         # 🔄 Restaurar backups
-└── docs/
-    ├── terminal-setup.md  # 📘 Guía detallada
-    └── troubleshooting.md # 🔧 Solución de problemas
-```
-
-## 🎨 Vista Previa del Terminal
+## 🎯 Vista Previa
 
 ### Proyecto Java
 ```bash
@@ -104,57 +26,211 @@ dotfiles/
 ╰─❯ 
 ```
 
-## ⚙️ Configuración Post-Instalación
+## ✨ Características Principales
 
-### 1. Cambiar fuente del terminal
-Configura tu terminal para usar la fuente **"MesloLGS NF"**:
+- **🎨 Prompt de dos líneas** - Más espacio para comandos largos
+- **⚡ Información contextual** - Solo muestra lo relevante según el proyecto
+- **🔧 Stack de desarrollo** - Java, C#, Node.js, Python, Docker/K8s
+- **🌈 Iconos y colores** - Interfaz visual moderna con Nerd Fonts
+- **📦 Instalación con un comando** - Setup automático completo
+- **🔄 Sincronización** - Misma configuración en todos tus ordenadores
+- **✅ Auto-verificación** - Diagnóstico y corrección automática de problemas
+- **💾 Backup automático** - Protege tu configuración actual
 
-- **GNOME Terminal**: Preferencias → Perfiles → Fuente personalizada
-- **Kitty**: Añadir `font_family MesloLGS NF` a `~/.config/kitty/kitty.conf`
-- **Alacritty**: Añadir en `~/.config/alacritty/alacritty.yml`:
-  ```yaml
-  font:
-    normal:
-      family: MesloLGS NF
-  ```
+## 🛠️ Stack Incluido
 
-### 2. Aplicar configuración
+| Componente | Descripción | Versión |
+|------------|-------------|---------|
+| **zsh** | Shell moderno y potente | Latest |
+| **Oh My Zsh** | Framework con plugins | Latest |
+| **Powerlevel10k** | Tema avanzado del prompt | Latest |
+| **MesloLGS NF** | Fuente con iconos Nerd Font | v3.0+ |
+| **Git integration** | Estado de repositorios en tiempo real | - |
+| **Plugins** | autosuggestions, syntax-highlighting, docker, etc. | - |
+
+## 🚀 Instalación
+
+### ⚡ Método 1: Una línea (Recomendado)
 ```bash
-source ~/.zshrc
+curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
+```
+> **¿Qué hace?** Clona automáticamente el repositorio en `~/dotfiles` y ejecuta la instalación completa.
+
+### 🔧 Método 2: Instalación manual
+```bash
+git clone https://github.com/pitusaa/dotfiles.git
+cd dotfiles
+chmod +x install-local.sh
+./install-local.sh
+```
+> **¿Cuándo usar?** Si prefieres revisar el código antes o personalizar algo.
+
+### 🔄 Método 3: Solo actualizar
+```bash
+# Si ya tienes el repo clonado
+cd ~/dotfiles
+git pull origin main
+./install-local.sh
 ```
 
-### 3. Reconfigurar si es necesario
+## 📋 Requisitos del Sistema
+
+- **SO**: Linux (Ubuntu/Debian, Fedora, Arch) o macOS
+- **Conexión a internet** para descargar dependencias
+- **Permisos sudo** para instalar paquetes del sistema
+- **Git** (se instala automáticamente si no está presente)
+
+## ✅ Verificar Instalación
+
+### 🔍 Diagnóstico Automático
 ```bash
+# Verificar que todo funciona correctamente
+cd ~/dotfiles
+bash scripts/verify-install.sh
+```
+
+**El script verifica:**
+- ✅ zsh instalado y configurado como shell por defecto
+- ✅ Oh My Zsh y Powerlevel10k instalados correctamente
+- ✅ Plugins necesarios (autosuggestions, syntax-highlighting)
+- ✅ Archivos de configuración (.zshrc, .p10k.zsh)
+- ✅ Fuentes MesloLGS NF instaladas
+- ✅ Estructura de dotfiles completa
+
+### 📊 Interpretación de Resultados
+- **🎉 Éxito (>90%)** → Todo funciona perfectamente
+- **⚠️ Advertencias (80-90%)** → Funcional con mejoras menores
+- **🔧 Problemas menores (<80%)** → Requiere atención
+- **❌ Errores críticos** → Necesita reinstalación
+
+## 📁 Estructura del Proyecto
+
+```
+dotfiles/
+├── install.sh              # 🚀 Instalador principal (auto-clona repo)
+├── install-local.sh        # 🔧 Instalador para ejecución local
+├── README.md               # 📖 Esta documentación
+├── LICENSE                 # 📜 Licencia MIT
+├── terminal/
+│   ├── .p10k.zsh          # ⚙️ Configuración personalizada de Powerlevel10k
+│   ├── .zshrc             # 🐚 Configuración de zsh con aliases y plugins
+│   └── install-fonts.sh   # 🔤 Instalador automático de fuentes
+├── scripts/
+│   ├── backup.sh          # 💾 Crear backups de configuraciones
+│   ├── restore.sh         # 🔄 Restaurar backups anteriores
+│   └── verify-install.sh  # ✅ Verificar y diagnosticar instalación
+└── docs/
+    ├── terminal-setup.md  # 📘 Guía detallada del setup
+    └── troubleshooting.md # 🔧 Solución de problemas avanzados
+```
+
+## ⚙️ Configuración Post-Instalación
+
+### 1. 🔤 Configurar Fuente del Terminal
+Cambiar la fuente de tu terminal a **"MesloLGS NF"**:
+
+**GNOME Terminal:**
+```bash
+# Abrir preferencias
+gnome-terminal --preferences
+# Ir a: Perfiles → [tu perfil] → Fuente personalizada → MesloLGS NF
+```
+
+**Kitty:**
+```bash
+echo 'font_family MesloLGS NF' >> ~/.config/kitty/kitty.conf
+```
+
+**Alacritty:**
+```yaml
+# Añadir a ~/.config/alacritty/alacritty.yml
+font:
+  normal:
+    family: MesloLGS NF
+```
+
+**VS Code:**
+```json
+// settings.json
+{
+  "terminal.integrated.fontFamily": "MesloLGS NF"
+}
+```
+
+### 2. 🔄 Aplicar Configuración
+```bash
+# Recargar configuración
+source ~/.zshrc
+
+# Si aparecen advertencias, es normal en la primera carga
+# Los plugins faltantes se instalarán automáticamente
+```
+
+### 3. 🎨 Personalizar (Opcional)
+```bash
+# Reconfigurar Powerlevel10k con asistente interactivo
 p10k configure
 ```
 
-## 🔧 Personalización
+## 🎯 Información Contextual por Proyecto
 
-### Cambiar elementos del prompt
-Edita `~/.p10k.zsh` y modifica estas secciones:
+El prompt muestra información relevante automáticamente:
+
+### ☕ Proyectos Java
+- **Detecta**: archivos `.java`, `pom.xml`, `build.gradle`
+- **Muestra**: versión de Java (☕17)
+- **Herramientas**: Maven, Gradle completions
+
+### 🔷 Proyectos .NET/C#
+- **Detecta**: archivos `.cs`, `.csproj`, `.sln`
+- **Muestra**: versión de .NET (🔷6.0)
+- **Herramientas**: dotnet CLI completions
+
+### 📦 Proyectos Web (Node.js)
+- **Detecta**: `package.json`
+- **Muestra**: versión de Node (📦18) + package name@version
+- **Herramientas**: npm, yarn completions
+
+### 🐍 Proyectos Python
+- **Detecta**: virtual environment activo
+- **Muestra**: nombre del venv (🐍myproject)
+- **Herramientas**: pip, poetry completions
+
+### 🐳 Docker/Kubernetes
+- **Detecta**: comandos docker, kubectl, k9s
+- **Muestra**: contexto de K8s (⚙️production)
+- **Herramientas**: docker-compose, helm completions
+
+## 🔧 Personalización Avanzada
+
+### Modificar Elementos del Prompt
+Editar `~/.p10k.zsh`:
 
 ```bash
-# Prompt izquierdo
+# Prompt izquierdo (línea superior)
 typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-  os_icon
-  dir
-  vcs
-  newline
-  prompt_char
+  os_icon                 # Logo del OS
+  dir                     # Directorio actual
+  vcs                     # Estado de Git
+  newline                 # Nueva línea
+  prompt_char            # Cursor (❯)
 )
 
-# Prompt derecho - añade/quita elementos
+# Prompt derecho (línea superior)
 typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
-  status
-  command_execution_time
-  java_version
-  node_version
-  virtualenv
-  time
+  status                  # ✓/✗ éxito del comando
+  command_execution_time  # Tiempo de ejecución
+  java_version           # ☕ Java
+  dotnet_version         # 🔷 .NET
+  node_version           # 📦 Node.js
+  package                # 📄 info package.json
+  virtualenv             # 🐍 Python venv
+  kubecontext            # ⚙️ Kubernetes
+  time                   # 🕐 Hora
 )
 ```
 
-### Cambiar colores
+### Cambiar Colores
 ```bash
 # Directorio
 typeset -g POWERLEVEL9K_DIR_FOREGROUND=31
@@ -166,114 +242,162 @@ typeset -g POWERLEVEL9K_VCS_FOREGROUND=76
 typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_VIINS_FOREGROUND=76
 ```
 
-## 🔄 Sincronización Entre Ordenadores
+### Añadir Aliases Personalizados
+Editar `~/.zshrc` y añadir al final:
 
-### Actualizar configuración
 ```bash
-cd ~/dotfiles
-git pull origin main
-./install.sh
+# Mis aliases personalizados
+alias deploydev='kubectl apply -f k8s/dev/'
+alias logs='docker-compose logs -f'
+alias gitundo='git reset --soft HEAD~1'
 ```
 
-### Subir cambios propios
+## 🔄 Sincronización Entre Ordenadores
+
+### Subir Cambios Propios
 ```bash
-# Copiar configuraciones actuales al repo
+# Guardar configuraciones actuales en el repo
+cd ~/dotfiles
 cp ~/.p10k.zsh terminal/
 cp ~/.zshrc terminal/
 
-# Commit y push
+# Subir a GitHub
 git add .
-git commit -m "Actualizar configuración"
+git commit -m "⚙️ Actualizar configuración personal"
 git push origin main
+```
+
+### Aplicar Cambios en Otro Ordenador
+```bash
+# Descargar última versión
+cd ~/dotfiles
+git pull origin main
+
+# Aplicar cambios
+./install-local.sh
 ```
 
 ## 🆘 Solución de Problemas
 
-### Error: "Por favor ejecuta este script desde el directorio dotfiles"
-**Causa**: Estás usando `install-local.sh` en lugar de `install.sh`
-**Solución**: 
+### ❌ Error: "Por favor ejecuta este script desde el directorio dotfiles"
+**Causa**: Estás usando el método incorrecto de instalación.
+
+**Solución**:
 ```bash
 # Para instalación automática, usa:
 curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
 
-# O clona manualmente:
+# Para instalación manual:
 git clone https://github.com/pitusaa/dotfiles.git
 cd dotfiles
 ./install-local.sh
 ```
 
-### Error de permisos con curl
-**Causa**: Algunos sistemas requieren permisos específicos
+### ⚠️ Advertencias sobre "instant prompt"
+**Causa**: Es normal en la primera carga o cuando se instalan plugins.
+
 **Solución**:
 ```bash
-# Descargar y ejecutar manualmente
-wget https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh
-chmod +x install.sh
-./install.sh
+# Es normal, pero si molesta:
+echo 'typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet' >> ~/.zshrc
+source ~/.zshrc
 ```
 
-### Git no está instalado
+### 🔤 Iconos se ven como cuadrados o símbolos raros
+**Causa**: Fuente MesloLGS NF no está configurada.
+
 **Solución**:
 ```bash
-# Ubuntu/Debian
-sudo apt update && sudo apt install git
+# 1. Verificar que está instalada
+fc-list | grep -i meslo
 
-# Fedora  
-sudo dnf install git
+# 2. Si no aparece, reinstalar fuentes
+cd ~/dotfiles
+bash terminal/install-fonts.sh
 
-# macOS
-xcode-select --install
+# 3. Cambiar fuente del terminal a "MesloLGS NF"
+# 4. Reiniciar terminal
 ```
 
-### Iconos no se ven correctamente
-1. Verificar que MesloLGS NF está instalada:
-   ```bash
-   fc-list | grep -i meslo
-   ```
-2. Cambiar fuente del terminal a "MesloLGS NF"
-3. Reiniciar terminal
+### 🔌 Plugins no funcionan
+**Causa**: Plugins no están instalados o hay error en .zshrc.
 
-### Prompt no funciona
-1. Verificar instalación de Powerlevel10k:
-   ```bash
-   ls ~/.oh-my-zsh/custom/themes/powerlevel10k
-   ```
-2. Reconfigurar:
-   ```bash
-   p10k configure
-   ```
-
-### Versiones de lenguajes no aparecen
-Las versiones solo aparecen en proyectos relevantes:
-- **Java**: Carpetas con archivos `.java` o `pom.xml`
-- **Node.js**: Carpetas con `package.json`
-- **Python**: Con virtual environment activado
-
-### Restaurar configuración anterior
+**Solución**:
 ```bash
-bash ~/dotfiles/scripts/restore.sh ~/.dotfiles-backup-FECHA
+# Diagnóstico automático
+cd ~/dotfiles
+bash scripts/verify-install.sh
+
+# Si detecta problemas:
+./install-local.sh  # Reinstalar
+
+# Manual:
+rm -rf ~/.oh-my-zsh/custom/plugins/zsh-*
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+```
+
+### 🐍 Versiones de lenguajes no aparecen
+**Causa**: Las versiones solo aparecen en proyectos relevantes.
+
+**Para que aparezcan**:
+- **Java**: Estar en carpeta con `.java`, `pom.xml` o `build.gradle`
+- **Node.js**: Estar en carpeta con `package.json`
+- **Python**: Tener virtual environment activado
+- **.NET**: Estar en carpeta con archivos `.cs` o `.csproj`
+
+### 💾 Restaurar Configuración Anterior
+```bash
+# Buscar backups disponibles
+ls -la ~/.dotfiles-backup-*
+
+# Restaurar específico
+bash ~/dotfiles/scripts/restore.sh ~/.dotfiles-backup-20241215-143022
+```
+
+### 🔄 Reinstalación Completa
+```bash
+# Limpiar todo
+rm -rf ~/.oh-my-zsh ~/.p10k.zsh ~/.zshrc
+
+# Reinstalar desde cero
+curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
 ```
 
 ## 🤝 Contribuir
 
-1. Fork del repositorio
-2. Crear rama: `git checkout -b feature/mi-mejora`
-3. Commit: `git commit -am 'Añadir nueva funcionalidad'`
-4. Push: `git push origin feature/mi-mejora`
-5. Pull Request
+1. **Fork** del repositorio
+2. **Crear rama**: `git checkout -b feature/mi-mejora`
+3. **Commit**: `git commit -am 'Añadir nueva funcionalidad'`
+4. **Push**: `git push origin feature/mi-mejora`
+5. **Pull Request**
+
+### Ideas para contribuir:
+- 🎨 Nuevos temas de colores
+- 🔧 Soporte para más herramientas de desarrollo
+- 📖 Mejoras en documentación
+- 🐛 Corrección de bugs
+- ✨ Nuevas funcionalidades
 
 ## 📜 Licencia
 
-MIT License - Ver [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la [Licencia MIT](LICENSE). Eres libre de usar, modificar y distribuir este código.
 
 ## 🙏 Agradecimientos
 
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) por el increíble tema
-- [Oh My Zsh](https://ohmyz.sh/) por el framework
-- [Nerd Fonts](https://www.nerdfonts.com/) por las fuentes con iconos
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) - Por el increíble tema
+- [Oh My Zsh](https://ohmyz.sh/) - Por el framework base
+- [Nerd Fonts](https://www.nerdfonts.com/) - Por las fuentes con iconos
+- [Comunidad de desarrolladores](https://github.com/pitusaa/dotfiles/contributors) - Por las contribuciones
+
+## 📞 Soporte
+
+- **🐛 Reportar bugs**: [Issues en GitHub](https://github.com/pitusaa/dotfiles/issues)
+- **💡 Sugerir mejoras**: [Discussions en GitHub](https://github.com/pitusaa/dotfiles/discussions)
+- **📖 Documentación**: [Wiki del proyecto](https://github.com/pitusaa/dotfiles/wiki)
 
 ---
 
 ⭐ **¿Te gusta este setup?** ¡Dale una estrella al repositorio!
 
-📧 **¿Problemas o sugerencias?** Abre un [issue](https://github.com/pitusaa/dotfiles/issues)
+🚀 **¿Quieres estar al día?** Activa las notificaciones del repo para recibir actualizaciones.
