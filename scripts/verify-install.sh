@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# SCRIPT DE VERIFICACIÓN DE INSTALACIÓN
+# SCRIPT DE VERIFICACIÓN DE INSTALACIÓN - VERSIÓN CORREGIDA
 # Diagnóstica y soluciona problemas comunes después de la instalación
 # =============================================================================
 
@@ -16,7 +16,7 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# Contadores
+# Contadores corregidos
 total_checks=0
 passed_checks=0
 warnings=0
@@ -26,22 +26,27 @@ log() {
     echo -e "${BLUE}[CHECK]${NC} $1"
 }
 
-success() {
+info() {
+    echo -e "${BLUE}  ℹ️${NC} $1"
+}
+
+# Funciones corregidas - solo incrementan una vez por verificación
+pass_check() {
     echo -e "${GREEN}[✅ PASS]${NC} $1"
     passed_checks=$((passed_checks + 1))
 }
 
-warning() {
+warn_check() {
     echo -e "${YELLOW}[⚠️ WARN]${NC} $1"
     warnings=$((warnings + 1))
 }
 
-error() {
+fail_check() {
     echo -e "${RED}[❌ FAIL]${NC} $1"
     errors=$((errors + 1))
 }
 
-check() {
+start_check() {
     total_checks=$((total_checks + 1))
 }
 
@@ -67,33 +72,33 @@ echo -e "${CYAN}🔍 VERIFICACIONES BÁSICAS DEL SISTEMA${NC}"
 echo ""
 
 # Check 1: Zsh instalado
-check
+start_check
 log "Verificando zsh..."
 if command -v zsh >/dev/null 2>&1; then
-    local zsh_version=$(zsh --version | cut -d' ' -f2)
-    success "zsh instalado - versión $zsh_version"
+    zsh_version=$(zsh --version | cut -d' ' -f2)
+    pass_check "zsh instalado - versión $zsh_version"
 else
-    error "zsh no está instalado"
+    fail_check "zsh no está instalado"
 fi
 
 # Check 2: Shell por defecto
-check
+start_check
 log "Verificando shell por defecto..."
 if [[ "$SHELL" == *"zsh"* ]]; then
-    success "zsh configurado como shell por defecto"
+    pass_check "zsh configurado como shell por defecto"
 else
-    warning "Shell por defecto: $SHELL (no es zsh)"
-    echo "  💡 Ejecuta: chsh -s \$(which zsh)"
+    warn_check "Shell por defecto: $SHELL (no es zsh)"
+    info "Ejecuta: chsh -s \$(which zsh)"
 fi
 
 # Check 3: Git disponible
-check
+start_check
 log "Verificando git..."
 if command -v git >/dev/null 2>&1; then
-    local git_version=$(git --version | cut -d' ' -f3)
-    success "git instalado - versión $git_version"
+    git_version=$(git --version | cut -d' ' -f3)
+    pass_check "git instalado - versión $git_version"
 else
-    error "git no está instalado"
+    fail_check "git no está instalado"
 fi
 
 echo ""
@@ -106,34 +111,32 @@ echo -e "${CYAN}📦 VERIFICACIONES DE OH MY ZSH${NC}"
 echo ""
 
 # Check 4: Oh My Zsh instalado
-check
+start_check
 log "Verificando Oh My Zsh..."
 if [[ -d ~/.oh-my-zsh ]]; then
-    success "Oh My Zsh instalado en ~/.oh-my-zsh"
+    pass_check "Oh My Zsh instalado en ~/.oh-my-zsh"
     
-    # Verificar directorio de plugins
+    # Información adicional (no cuenta como verificación)
     if [[ -d ~/.oh-my-zsh/plugins ]]; then
-        local plugin_count=$(ls ~/.oh-my-zsh/plugins | wc -l)
-        log "Plugins Oh My Zsh disponibles: $plugin_count"
+        plugin_count=$(ls ~/.oh-my-zsh/plugins | wc -l)
+        info "Plugins Oh My Zsh disponibles: $plugin_count"
     fi
 else
-    error "Oh My Zsh no está instalado"
+    fail_check "Oh My Zsh no está instalado"
 fi
 
 # Check 5: Powerlevel10k tema
-check
+start_check
 log "Verificando Powerlevel10k..."
 if [[ -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
-    success "Powerlevel10k instalado correctamente"
-    
     if [[ -f ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme ]]; then
-        success "Archivo de tema P10k presente"
+        pass_check "Powerlevel10k instalado correctamente"
     else
-        error "Archivo de tema P10k faltante"
+        fail_check "Powerlevel10k: directorio presente pero archivo de tema faltante"
     fi
 else
-    error "Powerlevel10k no está instalado"
-    echo "  💡 Ejecuta: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
+    fail_check "Powerlevel10k no está instalado"
+    info "Ejecuta: git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
 fi
 
 echo ""
@@ -146,23 +149,23 @@ echo -e "${CYAN}🔌 VERIFICACIONES DE PLUGINS${NC}"
 echo ""
 
 # Check 6: Plugin zsh-autosuggestions
-check
+start_check
 log "Verificando zsh-autosuggestions..."
 if [[ -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]]; then
-    success "zsh-autosuggestions instalado"
+    pass_check "zsh-autosuggestions instalado"
 else
-    warning "zsh-autosuggestions no encontrado"
-    echo "  💡 Se instalará automáticamente en el próximo inicio de zsh"
+    warn_check "zsh-autosuggestions no encontrado"
+    info "Se instalará automáticamente en el próximo inicio de zsh"
 fi
 
 # Check 7: Plugin zsh-syntax-highlighting
-check
+start_check
 log "Verificando zsh-syntax-highlighting..."
 if [[ -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]; then
-    success "zsh-syntax-highlighting instalado"
+    pass_check "zsh-syntax-highlighting instalado"
 else
-    warning "zsh-syntax-highlighting no encontrado"
-    echo "  💡 Se instalará automáticamente en el próximo inicio de zsh"
+    warn_check "zsh-syntax-highlighting no encontrado"
+    info "Se instalará automáticamente en el próximo inicio de zsh"
 fi
 
 echo ""
@@ -175,59 +178,67 @@ echo -e "${CYAN}⚙️ VERIFICACIONES DE CONFIGURACIÓN${NC}"
 echo ""
 
 # Check 8: Archivo .zshrc
-check
+start_check
 log "Verificando archivo .zshrc..."
 if [[ -f ~/.zshrc ]]; then
-    success "Archivo .zshrc presente"
+    # Verificar múltiples aspectos pero solo un resultado por verificación
+    zshrc_score=0
+    total_zshrc_checks=4
     
-    # Verificar contenido del .zshrc
-    log "Analizando contenido de .zshrc..."
-    
-    check
+    # Sub-verificaciones para información
     if grep -q "oh-my-zsh" ~/.zshrc; then
-        success "Configuración Oh My Zsh encontrada"
+        zshrc_score=$((zshrc_score + 1))
+        info "✓ Configuración Oh My Zsh encontrada"
     else
-        error ".zshrc no contiene configuración de Oh My Zsh"
+        info "✗ Configuración Oh My Zsh no encontrada"
     fi
     
-    check
     if grep -q 'ZSH_THEME="powerlevel10k/powerlevel10k"' ~/.zshrc; then
-        success "Tema Powerlevel10k configurado correctamente"
+        zshrc_score=$((zshrc_score + 1))
+        info "✓ Tema Powerlevel10k configurado"
     else
-        error "Tema Powerlevel10k no configurado correctamente"
+        info "✗ Tema Powerlevel10k no configurado"
     fi
     
-    check
     if grep -q "plugins=" ~/.zshrc; then
-        success "Configuración de plugins encontrada"
-        local plugins_line=$(grep "plugins=" ~/.zshrc | head -1)
-        log "Plugins configurados: ${plugins_line#*=}"
+        zshrc_score=$((zshrc_score + 1))
+        info "✓ Configuración de plugins encontrada"
     else
-        warning "No se encontró configuración de plugins"
+        info "✗ Configuración de plugins no encontrada"
     fi
     
-    check
-    if grep -q "~/powerlevel10k/" ~/.zshrc; then
-        error "Encontradas rutas incorrectas de Powerlevel10k (instalación manual antigua)"
-        echo "  💡 Esto causará errores. Considera regenerar .zshrc"
+    if ! grep -q "~/powerlevel10k/" ~/.zshrc; then
+        zshrc_score=$((zshrc_score + 1))
+        info "✓ No hay rutas incorrectas de Powerlevel10k"
     else
-        success "No se encontraron rutas incorrectas de Powerlevel10k"
+        info "✗ Encontradas rutas incorrectas de Powerlevel10k"
     fi
     
+    # Resultado final de la verificación
+    if [[ $zshrc_score -eq $total_zshrc_checks ]]; then
+        pass_check "Archivo .zshrc configurado correctamente ($zshrc_score/$total_zshrc_checks)"
+    elif [[ $zshrc_score -ge 2 ]]; then
+        warn_check "Archivo .zshrc parcialmente correcto ($zshrc_score/$total_zshrc_checks)"
+    else
+        fail_check "Archivo .zshrc con problemas importantes ($zshrc_score/$total_zshrc_checks)"
+    fi
 else
-    error "Archivo .zshrc no encontrado"
+    fail_check "Archivo .zshrc no encontrado"
 fi
 
 # Check 9: Archivo .p10k.zsh
-check
+start_check
 log "Verificando archivo .p10k.zsh..."
 if [[ -f ~/.p10k.zsh ]]; then
-    success "Configuración Powerlevel10k presente"
-    local p10k_size=$(stat -f%z ~/.p10k.zsh 2>/dev/null || stat -c%s ~/.p10k.zsh 2>/dev/null || echo "unknown")
-    log "Tamaño del archivo: $p10k_size bytes"
+    p10k_size=$(stat -f%z ~/.p10k.zsh 2>/dev/null || stat -c%s ~/.p10k.zsh 2>/dev/null || echo "0")
+    if [[ "$p10k_size" -gt 1000 ]]; then
+        pass_check "Configuración Powerlevel10k presente ($p10k_size bytes)"
+    else
+        warn_check "Archivo .p10k.zsh muy pequeño ($p10k_size bytes)"
+    fi
 else
-    warning "Archivo .p10k.zsh no encontrado"
-    echo "  💡 Se generará automáticamente al ejecutar 'p10k configure'"
+    warn_check "Archivo .p10k.zsh no encontrado"
+    info "Se generará automáticamente al ejecutar 'p10k configure'"
 fi
 
 echo ""
@@ -240,19 +251,18 @@ echo -e "${CYAN}🔤 VERIFICACIONES DE FUENTES${NC}"
 echo ""
 
 # Check 10: Fuentes Nerd Font
-check
+start_check
 log "Verificando fuentes MesloLGS NF..."
 if command -v fc-list >/dev/null 2>&1; then
     if fc-list | grep -i "meslo.*nf" >/dev/null 2>&1; then
-        success "Fuentes MesloLGS NF detectadas"
-        local font_count=$(fc-list | grep -i "meslo.*nf" | wc -l)
-        log "Variantes de fuente encontradas: $font_count"
+        font_count=$(fc-list | grep -i "meslo.*nf" | wc -l)
+        pass_check "Fuentes MesloLGS NF detectadas ($font_count variantes)"
     else
-        warning "Fuentes MesloLGS NF no detectadas"
-        echo "  💡 Ejecuta: bash ~/dotfiles/terminal/install-fonts.sh"
+        warn_check "Fuentes MesloLGS NF no detectadas"
+        info "Ejecuta: bash ~/dotfiles/terminal/install-fonts.sh"
     fi
 else
-    warning "fc-list no disponible, no se pueden verificar fuentes"
+    warn_check "fc-list no disponible, no se pueden verificar fuentes"
 fi
 
 echo ""
@@ -265,47 +275,28 @@ echo -e "${CYAN}📁 VERIFICACIONES DE DOTFILES${NC}"
 echo ""
 
 # Check 11: Directorio dotfiles
-check
+start_check
 log "Verificando directorio dotfiles..."
 if [[ -d ~/dotfiles ]]; then
-    success "Directorio dotfiles presente en ~/dotfiles"
+    # Verificar estructura pero solo un resultado final
+    structure_score=0
+    total_structure_checks=5
     
-    # Verificar estructura
-    local structure_ok=true
+    [[ -f ~/dotfiles/install.sh ]] && structure_score=$((structure_score + 1)) && info "✓ install.sh presente"
+    [[ -f ~/dotfiles/install-local.sh ]] && structure_score=$((structure_score + 1)) && info "✓ install-local.sh presente"
+    [[ -d ~/dotfiles/terminal ]] && structure_score=$((structure_score + 1)) && info "✓ directorio terminal/ presente"
+    [[ -d ~/dotfiles/scripts ]] && structure_score=$((structure_score + 1)) && info "✓ directorio scripts/ presente"
+    [[ -f ~/dotfiles/README.md ]] && structure_score=$((structure_score + 1)) && info "✓ README.md presente"
     
-    if [[ -f ~/dotfiles/install.sh ]]; then
-        log "✓ install.sh presente"
+    if [[ $structure_score -eq $total_structure_checks ]]; then
+        pass_check "Estructura de dotfiles completa ($structure_score/$total_structure_checks)"
+    elif [[ $structure_score -ge 3 ]]; then
+        warn_check "Estructura de dotfiles parcial ($structure_score/$total_structure_checks)"
     else
-        warning "install.sh faltante"
-        structure_ok=false
-    fi
-    
-    if [[ -f ~/dotfiles/install-local.sh ]]; then
-        log "✓ install-local.sh presente"
-    else
-        warning "install-local.sh faltante"
-        structure_ok=false
-    fi
-    
-    if [[ -d ~/dotfiles/terminal ]]; then
-        log "✓ directorio terminal/ presente"
-    else
-        warning "directorio terminal/ faltante"
-        structure_ok=false
-    fi
-    
-    if [[ -d ~/dotfiles/scripts ]]; then
-        log "✓ directorio scripts/ presente"
-    else
-        warning "directorio scripts/ faltante"
-        structure_ok=false
-    fi
-    
-    if $structure_ok; then
-        success "Estructura de dotfiles correcta"
+        fail_check "Estructura de dotfiles incompleta ($structure_score/$total_structure_checks)"
     fi
 else
-    warning "Directorio dotfiles no encontrado en ~/dotfiles"
+    warn_check "Directorio dotfiles no encontrado en ~/dotfiles"
 fi
 
 echo ""
@@ -329,19 +320,24 @@ echo "• Verificaciones exitosas: $passed_checks"
 echo "• Advertencias: $warnings"
 echo "• Errores: $errors"
 
+# Verificar que la matemática sea correcta
+if [[ $((passed_checks + warnings + errors)) -ne $total_checks ]]; then
+    echo -e "${RED}⚠️ ERROR INTERNO: Los contadores no cuadran${NC}"
+    echo "Suma: $((passed_checks + warnings + errors)) ≠ Total: $total_checks"
+fi
+
 echo ""
-local success_rate=$((passed_checks * 100 / total_checks))
-echo -e "${CYAN}📈 Tasa de éxito: ${success_rate}%${NC}"
+if [[ $total_checks -gt 0 ]]; then
+    success_rate=$((passed_checks * 100 / total_checks))
+    echo -e "${CYAN}📈 Tasa de éxito: ${success_rate}%${NC}"
+else
+    echo -e "${RED}📈 No se pudieron realizar verificaciones${NC}"
+fi
 
 echo ""
 if [[ $errors -eq 0 ]] && [[ $warnings -le 2 ]]; then
     echo -e "${GREEN}🎉 ¡INSTALACIÓN EXITOSA!${NC}"
     echo "Tu configuración de dotfiles está funcionando correctamente."
-    echo ""
-    echo -e "${CYAN}✨ Próximos pasos:${NC}"
-    echo "1. Reinicia tu terminal"
-    echo "2. Cambia la fuente a 'MesloLGS NF'"
-    echo "3. Ejecuta: source ~/.zshrc"
 elif [[ $errors -eq 0 ]]; then
     echo -e "${YELLOW}⚠️ INSTALACIÓN CON ADVERTENCIAS${NC}"
     echo "Tu configuración debería funcionar, pero hay algunas mejoras posibles."
@@ -354,24 +350,23 @@ else
 fi
 
 echo ""
-echo -e "${CYAN}🔧 COMANDOS DE SOLUCIÓN RÁPIDA:${NC}"
+echo -e "${CYAN}🔧 COMANDOS DE SOLUCIÓN:${NC}"
 echo ""
-echo "# Reinstalar Oh My Zsh:"
-echo "rm -rf ~/.oh-my-zsh && curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh"
-echo ""
-echo "# Reinstalar Powerlevel10k:"
-echo "rm -rf ~/.oh-my-zsh/custom/themes/powerlevel10k"
-echo "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k"
-echo ""
-echo "# Reconfigurar completamente:"
+echo "# Diagnóstico y corrección automática:"
 echo "cd ~/dotfiles && ./install-local.sh"
 echo ""
-echo "# Configurar Powerlevel10k:"
+echo "# Reconfigurar Powerlevel10k:"
 echo "p10k configure"
+echo ""
+echo "# Reinstalar plugins:"
+echo "rm -rf ~/.oh-my-zsh/custom/plugins/zsh-*"
+echo "source ~/.zshrc  # Los plugins se instalarán automáticamente"
+echo ""
+echo "# Reinstalar fuentes:"
+echo "cd ~/dotfiles && bash terminal/install-fonts.sh"
 echo ""
 
 echo -e "${CYAN}📞 SOPORTE:${NC}"
-echo "Si necesitas ayuda adicional:"
 echo "• GitHub Issues: https://github.com/pitusaa/dotfiles/issues"
 echo "• Documentación: https://github.com/pitusaa/dotfiles/blob/main/README.md"
 echo ""
