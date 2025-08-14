@@ -25,19 +25,29 @@ Configuración completa y automatizada para un terminal de desarrollo moderno co
 | **Language versions** | Java, Node, Python, C# | ✅ |
 | **Docker context** | Kubernetes/Docker info | ✅ |
 
-## 🚀 Instalación Rápida
+## 🚀 Instalación
 
-### Opción 1: Un comando (recomendado)
+### 💡 Método 1: Una sola línea (recomendado)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/TU_USUARIO/dotfiles/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
 ```
+> **¿Qué hace?** Clona automáticamente el repositorio en `~/dotfiles` y ejecuta la instalación completa.
 
-### Opción 2: Clonar repositorio
+### 🔧 Método 2: Clonar manualmente
 ```bash
-git clone https://github.com/TU_USUARIO/dotfiles.git
+git clone https://github.com/pitusaa/dotfiles.git
 cd dotfiles
-chmod +x install.sh
-./install.sh
+chmod +x install-local.sh
+./install-local.sh
+```
+> **¿Cuándo usar?** Si prefieres revisar el código antes o personalizar algo.
+
+### ⚡ Método 3: Solo actualizar configuración
+```bash
+# Si ya tienes el repo clonado
+cd ~/dotfiles
+git pull origin main
+./install-local.sh
 ```
 
 ## 📋 Requisitos Previos
@@ -59,7 +69,8 @@ chmod +x install.sh
 
 ```
 dotfiles/
-├── install.sh              # 🚀 Script principal de instalación
+├── install.sh              # 🚀 Script principal (auto-clona repo)
+├── install-local.sh        # 🔧 Script para ejecución local
 ├── README.md               # 📖 Esta documentación
 ├── terminal/
 │   ├── .p10k.zsh          # ⚙️ Configuración de Powerlevel10k
@@ -178,6 +189,42 @@ git push origin main
 
 ## 🆘 Solución de Problemas
 
+### Error: "Por favor ejecuta este script desde el directorio dotfiles"
+**Causa**: Estás usando `install-local.sh` en lugar de `install.sh`
+**Solución**: 
+```bash
+# Para instalación automática, usa:
+curl -fsSL https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh | bash
+
+# O clona manualmente:
+git clone https://github.com/pitusaa/dotfiles.git
+cd dotfiles
+./install-local.sh
+```
+
+### Error de permisos con curl
+**Causa**: Algunos sistemas requieren permisos específicos
+**Solución**:
+```bash
+# Descargar y ejecutar manualmente
+wget https://raw.githubusercontent.com/pitusaa/dotfiles/main/install.sh
+chmod +x install.sh
+./install.sh
+```
+
+### Git no está instalado
+**Solución**:
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install git
+
+# Fedora  
+sudo dnf install git
+
+# macOS
+xcode-select --install
+```
+
 ### Iconos no se ven correctamente
 1. Verificar que MesloLGS NF está instalada:
    ```bash
@@ -204,7 +251,7 @@ Las versiones solo aparecen en proyectos relevantes:
 
 ### Restaurar configuración anterior
 ```bash
-bash scripts/restore.sh ~/.dotfiles-backup-FECHA
+bash ~/dotfiles/scripts/restore.sh ~/.dotfiles-backup-FECHA
 ```
 
 ## 🤝 Contribuir
@@ -229,4 +276,4 @@ MIT License - Ver [LICENSE](LICENSE) para más detalles.
 
 ⭐ **¿Te gusta este setup?** ¡Dale una estrella al repositorio!
 
-📧 **¿Problemas o sugerencias?** Abre un [issue](https://github.com/TU_USUARIO/dotfiles/issues)
+📧 **¿Problemas o sugerencias?** Abre un [issue](https://github.com/pitusaa/dotfiles/issues)

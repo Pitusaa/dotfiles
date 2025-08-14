@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # =============================================================================
-# DOTFILES INSTALLER
-# Configuración automática de terminal personalizada
+# DOTFILES INSTALLER - VERSIÓN LOCAL
+# Para ejecutar desde el directorio clonado manualmente
 # =============================================================================
 
-set -e  # Salir si cualquier comando falla
+set -e
 
 # Colores para output
 RED='\033[0;31m'
@@ -37,45 +37,26 @@ error() {
 echo -e "${PURPLE}"
 cat << "EOF"
 ╔═══════════════════════════════════════════════════════════════╗
-║                        DOTFILES INSTALLER                    ║
-║              Configuración personalizada de terminal         ║
+║                   DOTFILES INSTALLER - LOCAL                  ║
+║              Configuración personalizada de terminal          ║
 ╚═══════════════════════════════════════════════════════════════╝
 EOF
 echo -e "${NC}"
 
-# Variables
-DOTFILES_REPO="https://github.com/pitusaa/dotfiles.git"
-DOTFILES_DIR="$HOME/dotfiles"
-BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+# Verificar que estamos en el directorio correcto
+if [[ ! -f "install-local.sh" ]]; then
+    error "Por favor ejecuta este script desde el directorio dotfiles"
+    echo ""
+    echo "Uso correcto:"
+    echo "1. git clone https://github.com/TU_USUARIO/dotfiles.git"
+    echo "2. cd dotfiles" 
+    echo "3. ./install-local.sh"
+    exit 1
+fi
 
-# Función para clonar el repositorio si no existe
-setup_dotfiles_repo() {
-    if [[ ! -d "$DOTFILES_DIR" ]]; then
-        log "Clonando repositorio dotfiles..."
-        if command -v git >/dev/null 2>&1; then
-            git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
-            success "Repositorio clonado en $DOTFILES_DIR"
-        else
-            error "Git no está instalado. Instalando git primero..."
-            install_dependencies
-            git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
-        fi
-    else
-        log "Repositorio dotfiles ya existe en $DOTFILES_DIR"
-        log "Actualizando repositorio..."
-        cd "$DOTFILES_DIR"
-        git pull origin main || warning "No se pudo actualizar el repositorio"
-    fi
-    
-    # Cambiar al directorio dotfiles
-    cd "$DOTFILES_DIR"
-    
-    # Verificar que tenemos los archivos necesarios
-    if [[ ! -f "install.sh" ]]; then
-        error "El repositorio no contiene el archivo install.sh"
-        exit 1
-    fi
-}
+# Variables
+DOTFILES_DIR="$PWD"
+BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
 
 # Función para crear backup
 create_backup() {
@@ -215,7 +196,7 @@ setup_zsh_default() {
 # Función principal
 main() {
     echo ""
-    log "Iniciando instalación de dotfiles..."
+    log "Iniciando instalación de dotfiles desde directorio local..."
     echo ""
     
     # Verificar si el usuario quiere continuar
@@ -225,9 +206,6 @@ main() {
         log "Instalación cancelada"
         exit 0
     fi
-    
-    # Configurar repositorio dotfiles (clonar si es necesario)
-    setup_dotfiles_repo
     
     # Crear backup
     create_backup
